@@ -1,7 +1,7 @@
 # DRF 后端
 
 简单地做了个API，作测试用，已经部署到服务器上。
-
+好用的 HTTP 接口测试工具：http://tool.chinaz.com/tools/httptest.aspx?jdfwkey=5yvss1
 
 
 ## 1 Articles
