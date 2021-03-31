@@ -1,5 +1,6 @@
 django
 django-filter
 djangorestframework
+djangorestframework-simplejwt
 httpie==2.4.0
 sqlite
