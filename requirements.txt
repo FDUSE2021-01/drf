@@ -1,0 +1,5 @@
+django
+django-filter
+djangorestframework
+httpie==2.4.0
+sqlite
