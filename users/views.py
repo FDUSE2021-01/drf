@@ -10,7 +10,7 @@ class UserRegister(generics.CreateAPIView):
     serializer_class = UserSerializer
 
     def perform_create(self, serializer):
-        user = serializer.save()
+        serializer.save()
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):

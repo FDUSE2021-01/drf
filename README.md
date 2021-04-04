@@ -10,9 +10,9 @@
 
 ## 1 用户验证
 
-用于进行用户身份验证的 API，采用 JWT 的方式。**暂时未实现用户注册的功能，仅支持现存用户的登录。**
+用于进行用户身份验证的 API，采用 JWT 的方式。
 
-客户端与服务器进行一次用户名-密码验证后得到 Token，此后客户端应保存好 Token，以此向服务器证明自己的身份。Token 的有效期较短（5分钟），在失效前客户端可以向服务器端请求“续费”。用户注销时客户端应妥善销毁 Token。
+客户端与服务器进行一次用户名-密码验证后得到 Token，此后客户端应保存好 Token，以此向服务器证明自己的身份。Access Token 的有效期较短（60分钟），Refresh Token 的有效期较长（1天），在 Refresh Token 失效前客户端可以向服务器端请求“续费”。用户注销时客户端应妥善销毁 Token。
 
 
 
@@ -20,13 +20,10 @@
 
 ```
 超级用户
-root:se2021
+root:se2021 (id:1)
 
 普通用户
-lzh:nb
-obangw:nb
-xiaoas:nb
-pryest:nb
+user1:pass1 (id:17)
 ```
 
 
@@ -79,19 +76,79 @@ Response Body:
 
 
 
+## 2 用户信息管理
+
+可以以超级用户 (root: se2021) 身份登录 /admin/，从后台管理所有用户。
 
 
-## 2 Articles
+
+### 2.1 /api/users/registration/
+
+用于用户注册，3个域均为必填，其中邮箱可能在以后会进行验证。
+
+```
+POST /api/users/registration/
+
+Request Header:
+Content-Type: application/json
+
+Request Body:
+{
+	"username": "user1",
+	"password": "pass1",
+	"email": "a@b.com"
+}
+```
+
+后端会检查 `username` 是否被注册，否则以 json 格式返回 `400 Bad Request`：
+
+```
+{
+    "username":["已存在一位使用该名字的用户。"]
+}
+```
+
+若有字段未填写，后端将同样以 json 格式返回 `400 Bad Request`：
+
+```
+{
+	"password":["该字段是必填项。"]
+}
+```
+
+
+
+### 2.2 /api/users/\<int\>/
+
+用户登录后可以查看、删除自己的信息。（本来应该也可以进行信息修改，但出了点 bug 还没调出来……）
+
+```
+GET /api/users/17/
+
+Request Header:
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
+```
+
+```
+DELETE /api/users/17/
+
+Request Header:
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
+```
+
+
+
+## 3 Articles
 
 用户登录以后可以上传、更新、删除文章。未登录用户可以阅读文章。
 
 
 
-### 2.1 /api/articles/
+### 3.1 /api/articles/
 
 支持 GET 和 POST，用于获取文章列表，以及发布新文章。
 
-#### 2.1.1 GET
+#### 3.1.1 GET
 
 获取分页后的文章列表，不需要登陆，不需要发送其他信息。在当前的测试阶段，一页中限制最多2篇文章。
 
@@ -147,7 +204,7 @@ GET /api/articles/?page=3
 
 
 
-#### 2.1.2 POST
+#### 3.1.2 POST
 
 头部需要带上 JWT Access Token，即放在 `Bearer` 后面的字符串。 
 
@@ -169,7 +226,7 @@ Request Body:
 
 
 
-### 2.2 /api/articles/\<int\>/
+### 3.2 /api/articles/\<int\>/
 
 例如 `/api/articles/1/` 。
 
