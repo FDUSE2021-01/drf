@@ -55,7 +55,7 @@ Response Body:
 
 ### 1.2 /api/token/refresh/
 
-Token 5分钟后过期，在此之前可以进行 refresh 获取新的 Access Token，并刷新 Refresh Token 的有效期。
+Access Token 有效较短，Refresh Token 有效期较长，可以通过 refresh 获取新的 Access Token。
 
 ```
 POST /api/token/refresh/
