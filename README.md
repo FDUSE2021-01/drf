@@ -24,6 +24,7 @@ root:se2021 (id:1)
 
 普通用户
 user1:pass1 (id:17)
+user2:pass2 (id:18)
 ```
 
 
@@ -94,12 +95,34 @@ Content-Type: application/json
 
 Request Body:
 {
-	"username": "user1",
-	"password": "pass1",
+	"username": "user2",
+	"password": "pass2",
 	"email": "a@b.com"
 }
 ```
 
+创建成功的回复：
+```
+201 Created
+
+Response Body:
+{
+	id": 18,
+	"email": "a@b.com",
+	"password": "pbkdf2_sha256$216000$oVdteOkdaPOd$3utrp0LWnLMpiJ4SUZs9HL0vB6FhZK+/oKpe63Vpa84=",
+	"last_login": null,
+	"is_superuser": false,
+	"username": "user2",
+	"first_name": "",
+	"last_name": "",
+	"is_staff": false,
+	"is_active": true,
+	"date_joined": "2021-04-08T12:22:18.514507Z",
+	"groups":[],
+	"user_permissions":[]
+}
+```
+	
 后端会检查 `username` 是否被注册，否则以 json 格式返回 `400 Bad Request`：
 
 ```
