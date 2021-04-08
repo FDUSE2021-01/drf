@@ -167,14 +167,16 @@ Response Body:
             "id": 1,
             "created": "2021-03-31T08:56:54.086998Z",
             "title": "T1",
-            "content": "Hi\nThis is article 1",
+            "content_html": "Hi\nThis is article 1",
+            "content_md": "default markdown content",
             "author": 1
         },
         {
             "id": 2,
             "created": "2021-03-31T10:06:25.610410Z",
             "title": "T2",
-            "content": "Hi\nThis is article 2",
+            "content_html": "Hi\nThis is article 2",
+            "content_md": "default markdown content",
             "author": 1
         }
     ]
@@ -195,7 +197,8 @@ GET /api/articles/?page=3
             "id": 5,
             "created": "2021-03-31T10:59:41.401458Z",
             "title": "T5",
-            "content": "Hi\nThis is article 5",
+            "content_html": "Hi\nThis is article 5",
+            "content_md": "default markdown content",
             "author": 1
         }
     ]
@@ -220,7 +223,8 @@ Content-Type: application/json
 Request Body:
 {
     "title": "T1",
-    "content": "Hi\nThis is article 1"
+    "content_html": "Hi\nThis is article 1",
+    "content_md": "default markdown content"
 }
 ```
 
@@ -250,7 +254,8 @@ Content-Type: application/json
 Request Body:
 {
     "title": "T2",
-    "content": "Modified article 2."
+    "content_html": "Modified article 2.",
+    "content_md": "default markdown content"
 }
 ```
 
