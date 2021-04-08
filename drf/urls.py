@@ -22,5 +22,5 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include('articles.urls')),
     path('api/', include('users.urls')),
-    path('admin/', admin.site.urls)
+    path('api/admin/', admin.site.urls)
 ]
