@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from articles.models import Article
+from articles.models import Article, FileModel
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -8,3 +8,8 @@ class ArticleSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['author']
 
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FileModel
+        fields = '__all__'
+        read_only_fields = ['author']

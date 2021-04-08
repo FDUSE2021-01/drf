@@ -18,6 +18,22 @@ class Article(models.Model):
     class Meta:
         ordering = ['created']
 
+class FileModel(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=256)
+    file = models.FileField(upload_to='upload')
+
+    author = models.ForeignKey(
+        User,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name='files'
+    )
+    
+    class Meta:
+        ordering = ['created']
+
+
 class ArticlesGame(models.Model):
     index = models.IntegerField(blank=True, null=True)
     href = models.TextField(blank=True, null=True)

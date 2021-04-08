@@ -261,4 +261,100 @@ Request Body:
 
 
 
+## 4 Files
 
+用户登录以后可以上传、更新、删除图片，游戏插件等文件。未登录用户可以浏览与下载用户上传的图片，游戏插件等文件。
+
+
+
+### 4.1 /api/upload/
+
+支持 GET 和 POST，用于获取上传文件列表，以及发布新文件。
+
+#### 4.1.1 GET
+
+获取分页后的文件列表，不需要登陆，不需要发送其他信息。
+
+Response 中的 `count` 表示文件总数， `next` 和 `previous` 为下一页和上一页的 URI 。
+
+```
+GET /api/upload/
+
+Response Body:
+{
+    "count": 5,
+    "next": "http://127.0.0.1:8000/api/upload/?page=2",
+    "previous": null,
+    "results": [
+        {
+            "id": 1,
+            "created": "2021-04-08T11:03:22.694071Z",
+            "name": "Little-Snowman",
+            "file": "http://127.0.0.1:8000/upload/IMG_1.jpeg",
+            "author": null
+        },
+        {
+            "id": 2,
+            "created": "2021-04-08T11:08:58.322979Z",
+            "name": "DOTA4",
+            "file": "http://127.0.0.1:8000/upload/IMG_1443.jpeg",
+            "author": null
+        }
+    ]
+}
+```
+其余与3.1.1的article接口类似。
+
+
+
+#### 4.1.2 POST
+
+头部需要带上 JWT Access Token，即放在 `Bearer` 后面的字符串。 
+
+HTTP Body 以 Form 格式传输，需要包含的内容如下。
+
+```
+POST /api/upload/
+
+Request Header:
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
+Content-Type: application/json
+
+Request Body:
+{
+    "name": "DOTA7",
+    "file": "http://127.0.0.1:8000/upload/IMG_1443_HO9B90f.jpeg",
+}
+```
+
+其中name为Text格式，file为File格式。
+
+
+
+### 4.2 /api/upload/\<int\>/
+
+例如 `/api/upload/1/` 。
+
+用户登录后，可对自己写的文件进行修改、删除。
+
+GET 则不需要登陆，无需提供 `Authorization` 头部。
+
+- GET: 获取这份文件
+- PUT: 更新这份文件
+- DELETE: 删除这篇文章
+
+以 GET 为例：
+
+```
+GET /api/articles/6/
+
+Request Header:
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
+Content-Type: application/json
+
+Request Body:
+{
+    "name": "DOTA7",
+    "file": "http://127.0.0.1:8000/upload/IMG_1443_HO9B90f.jpeg",
+}
+```
