@@ -48,7 +48,9 @@ Request Body:
 Response Body:
 {
 	"refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIU......JiO4veZEbTE",
-	"access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJ......rscsS_r9J39Kt6wyvEY"
+	"access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJ......rscsS_r9J39Kt6wyvEY",
+	"id": "1",
+	"username": "root"
 }
 ```
 
@@ -107,7 +109,7 @@ Request Body:
 
 Response Body:
 {
-	id": 18,
+	"id": 18,
 	"email": "a@b.com",
 	"password": "pbkdf2_sha256$216000$oVdteOkdaPOd$3utrp0LWnLMpiJ4SUZs9HL0vB6FhZK+/oKpe63Vpa84=",
 	"last_login": null,
@@ -122,7 +124,7 @@ Response Body:
 	"user_permissions":[]
 }
 ```
-	
+
 后端会检查 `username` 是否被注册，否则以 json 格式返回 `400 Bad Request`：
 
 ```
