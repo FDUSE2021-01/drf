@@ -29,6 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '173.82.119.100',
     '127.0.0.1',
+    'localhost',
 ]
 
 
@@ -139,3 +140,16 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
 }
+
+# E-mail
+# https://docs.djangoproject.com/en/3.1/topics/email/
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  
+MAILER_EMAIL_BACKEND = EMAIL_BACKEND  
+EMAIL_HOST = 'localhost'  
+# EMAIL_HOST_USER = 'root'
+# EMAIL_HOST_PASSWORD = ''  
+DEFAULT_FROM_EMAIL = 'noreply@wanju.monster'
+# EMAIL_PORT = 25
+# # EMAIL_USE_SSL = True  
+# EMAIL_USE_TLS = True
