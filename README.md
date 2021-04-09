@@ -1,3 +1,5 @@
+
+
 # DRF 后端
 
 下列接口已部署至服务器端，且已实现 `api_view`，大部分 `GET` 类接口可以通过浏览器直接访问获得可视化的数据表示。
@@ -81,7 +83,7 @@ Response Body:
 
 ## 2 用户信息管理
 
-可以以超级用户 (root: se2021) 身份登录 /admin/，从后台管理所有用户。
+可以以超级用户 (root: se2021) 身份登录 /api/admin/，从后台管理所有用户。
 
 
 
@@ -111,7 +113,6 @@ Response Body:
 {
 	"id": 18,
 	"email": "a@b.com",
-	"password": "pbkdf2_sha256$216000$oVdteOkdaPOd$3utrp0LWnLMpiJ4SUZs9HL0vB6FhZK+/oKpe63Vpa84=",
 	"last_login": null,
 	"is_superuser": false,
 	"username": "user2",
@@ -145,13 +146,30 @@ Response Body:
 
 ### 2.2 /api/users/\<int\>/
 
-用户登录后可以查看、删除自己的信息。（本来应该也可以进行信息修改，但出了点 bug 还没调出来……）
+用户登录后可以查看、更新、删除自己的信息。
+
+更新时，至少需要提供 `username`, `password`, `email`，其余部分选填，未填的部分在数据库中将保留原值（而不会被置为null）。
 
 ```
 GET /api/users/17/
 
 Request Header:
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
+```
+
+```
+PUT /api/users/17/
+
+Request Header:
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
+Content-Type: application/json
+
+Request Body:
+{
+	"username": "user1",
+	"password": "pass1",
+	"email": "c@d.com"
+}
 ```
 
 ```
