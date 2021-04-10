@@ -1,3 +1,5 @@
+
+
 # DRF 后端
 
 下列接口已部署至服务器端，且已实现 `api_view`，大部分 `GET` 类接口可以通过浏览器直接访问获得可视化的数据表示。
@@ -24,6 +26,7 @@ root:se2021 (id:1)
 
 普通用户
 user1:pass1 (id:17)
+user2:pass2 (id:18)
 ```
 
 
@@ -47,7 +50,9 @@ Request Body:
 Response Body:
 {
 	"refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIU......JiO4veZEbTE",
-	"access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJ......rscsS_r9J39Kt6wyvEY"
+	"access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJ......rscsS_r9J39Kt6wyvEY",
+	"id": "1",
+	"username": "root"
 }
 ```
 
@@ -78,7 +83,7 @@ Response Body:
 
 ## 2 用户信息管理
 
-可以以超级用户 (root: se2021) 身份登录 /admin/，从后台管理所有用户。
+可以以超级用户 (root: se2021) 身份登录 /api/admin/，从后台管理所有用户。
 
 
 
@@ -94,9 +99,30 @@ Content-Type: application/json
 
 Request Body:
 {
-	"username": "user1",
-	"password": "pass1",
+	"username": "user2",
+	"password": "pass2",
 	"email": "a@b.com"
+}
+```
+
+创建成功的回复：
+```
+201 Created
+
+Response Body:
+{
+	"id": 18,
+	"email": "a@b.com",
+	"last_login": null,
+	"is_superuser": false,
+	"username": "user2",
+	"first_name": "",
+	"last_name": "",
+	"is_staff": false,
+	"is_active": true,
+	"date_joined": "2021-04-08T12:22:18.514507Z",
+	"groups":[],
+	"user_permissions":[]
 }
 ```
 
@@ -120,13 +146,30 @@ Request Body:
 
 ### 2.2 /api/users/\<int\>/
 
-用户登录后可以查看、删除自己的信息。（本来应该也可以进行信息修改，但出了点 bug 还没调出来……）
+用户登录后可以查看、更新、删除自己的信息。
+
+更新时，至少需要提供 `username`, `password`, `email`，其余部分选填，未填的部分在数据库中将保留原值（而不会被置为null）。
 
 ```
 GET /api/users/17/
 
 Request Header:
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
+```
+
+```
+PUT /api/users/17/
+
+Request Header:
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
+Content-Type: application/json
+
+Request Body:
+{
+	"username": "user1",
+	"password": "pass1",
+	"email": "c@d.com"
+}
 ```
 
 ```

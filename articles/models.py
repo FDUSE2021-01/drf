@@ -18,6 +18,7 @@ class Article(models.Model):
     class Meta:
         ordering = ['created']
 
+
 class FileModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=256)
@@ -29,7 +30,7 @@ class FileModel(models.Model):
         on_delete=models.CASCADE,
         related_name='files'
     )
-    
+
     class Meta:
         ordering = ['created']
 
@@ -43,7 +44,8 @@ class ArticlesGame(models.Model):
     data_ds_crtrids = models.TextField(db_column='data-ds-crtrids', blank=True, null=True)
     onmouseover = models.TextField(blank=True, null=True)
     onmouseout = models.TextField(blank=True, null=True)
-    class_field = models.TextField(db_column='class', blank=True, null=True) # Field renamed because it was a Python reserved word.
+    class_field = models.TextField(db_column='class', blank=True,
+                                   null=True)  # Field renamed because it was a Python reserved word.
     data_search_page = models.IntegerField(db_column='data-search-page', blank=True, null=True)
     data_gpnav = models.TextField(db_column='data-gpnav', blank=True, null=True)
     item_name = models.TextField(blank=True, null=True)
