@@ -212,6 +212,8 @@ Response Body:
             "title": "T1",
             "content_html": "Hi\nThis is article 1",
             "content_md": "default markdown content",
+            "content_brief": "Default content brief",
+			"img_src": "/path/to/img",
             "author": 1
         },
         {
@@ -220,6 +222,8 @@ Response Body:
             "title": "T2",
             "content_html": "Hi\nThis is article 2",
             "content_md": "default markdown content",
+            "content_brief": "Default content brief",
+			"img_src": "/path/to/img",
             "author": 1
         }
     ]
@@ -242,6 +246,8 @@ GET /api/articles/?page=3
             "title": "T5",
             "content_html": "Hi\nThis is article 5",
             "content_md": "default markdown content",
+            "content_brief": "Default content brief",
+			"img_src": "/path/to/img",
             "author": 1
         }
     ]
@@ -267,7 +273,8 @@ Request Body:
 {
     "title": "T1",
     "content_html": "Hi\nThis is article 1",
-    "content_md": "default markdown content"
+    "content_md": "default markdown content",
+	"img_src": "/path/to/img"
 }
 ```
 
@@ -298,7 +305,9 @@ Request Body:
 {
     "title": "T2",
     "content_html": "Modified article 2.",
-    "content_md": "default markdown content"
+    "content_md": "default markdown content",
+    "content_brief": "Default content brief",
+	"img_src": "/path/to/img"
 }
 ```
 
