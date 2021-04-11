@@ -144,7 +144,11 @@ Response Body:
 ```
 
 ### 2.2 /api/users/activation?token=\<token\>
+用于用户注册后的验证，用户注册后服务器会向用户注册的邮箱发送一条带token的验证邮件，用户点击邮件链接导向前端，前端处理得到token后，给本api发送GET request，若token相同即验证用户邮箱成功。
 
+```
+GET /api/users/activation?token=test
+```
 
 ### 2.3 /api/users/\<int\>/
 
