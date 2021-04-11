@@ -119,13 +119,14 @@ Response Body:
     "first_name": "",
     "last_name": "",
     "is_staff": false,
-    "is_active": true,
+    "is_active": false,
     "date_joined": "2021-04-08T12:22:18.514507Z",
     "groups":[],
     "user_permissions":[]
 }
 ```
 
+注意is_active为false代表需要验证。
 后端会检查 `username` 是否被注册，否则以 json 格式返回 `400 Bad Request`：
 
 ```
@@ -142,9 +143,10 @@ Response Body:
 }
 ```
 
+### 2.2 /api/users/activation?token=\<token\>
 
 
-### 2.2 /api/users/\<int\>/
+### 2.3 /api/users/\<int\>/
 
 用户登录后可以查看、更新、删除自己的信息。
 
