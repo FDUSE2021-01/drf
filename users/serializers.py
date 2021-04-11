@@ -5,7 +5,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     # Change email field to "required"
-    email = serializers.EmailField(allow_blank=False, label='电子邮件地址', max_length=254, required=True)
+    email = serializers.EmailField(allow_blank=False, label='电子邮箱地址', max_length=254, required=True)
 
     class Meta:
         model = User

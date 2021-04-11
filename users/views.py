@@ -4,6 +4,8 @@ from users.permissions import IsMyself
 
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
+from django.contrib.auth.tokens import default_token_generator
 
 from rest_framework import generics
 
@@ -15,8 +17,9 @@ class UserRegister(generics.CreateAPIView):
 
     # Save hashed password instead of plain text
     def perform_create(self, serializer):
-        password = make_password(password=self.request.data['password'])
-        serializer.save(password=password)
+        password = make_password(password=serializer.validated_data['password'])
+        send_mail('test_subject', '1234567', 'noreply@wanju.monster',[serializer.validated_data['email']])
+        serializer.save(password=password, is_active= False)
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
