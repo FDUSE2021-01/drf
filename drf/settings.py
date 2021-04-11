@@ -27,6 +27,8 @@ SECRET_KEY = 'n8ofl#-hssrh1lbw7r2g50(5ig3j6-0=$%1l1%*nln31pp1h*='
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'wanju.monster',
+    'www.wanju.monster',
     '173.82.119.100',
     '127.0.0.1',
     'localhost',

@@ -8,7 +8,7 @@ class Article(models.Model):
     content_html = models.TextField()
     content_md = models.TextField()
     content_brief = models.TextField(blank=True, default='')
-    img_src = models.CharField(max_length=100)
+    img_src = models.CharField(max_length=1000)
     view_count = models.PositiveIntegerField(default=0)
 
     author = models.ForeignKey(
