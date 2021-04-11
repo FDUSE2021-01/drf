@@ -193,12 +193,14 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
 
 #### 3.1.1 GET
 
+##### 3.1.1.1 基本操作
+
 获取分页后的文章列表，不需要登陆，不需要发送其他信息。在当前的测试阶段，一页中限制最多2篇文章。
 
 Response 中的 `count` 表示文章总数， `next` 和 `previous` 为下一页和上一页的 URI 。
 
 ```
-GET /api/articles/
+GET /api/articles/ 或 GET /api/articles/?page=1
 
 Response Body:
 {
@@ -214,45 +216,39 @@ Response Body:
             "content_md": "default markdown content",
             "content_brief": "Default content brief",
             "img_src": "/path/to/img",
+            "view_count": 1,
             "author": 1
         },
         {
             "id": 2,
-            "created": "2021-03-31T10:06:25.610410Z",
-            "title": "T2",
-            "content_html": "Hi\nThis is article 2",
-            "content_md": "default markdown content",
-            "content_brief": "Default content brief",
-            "img_src": "/path/to/img",
+            ...
             "author": 1
         }
     ]
 }
 ```
 
-请求第3页：
+##### 3.1.1.2 过滤条件
+
+GET 时可添加过滤条件的组合：
 
 ```
-GET /api/articles/?page=3
-
-{
-    "count": 5,
-    "next": null,
-    "previous": "http://127.0.0.1:8000/api/articles/?page=2",
-    "results": [
-        {
-            "id": 5,
-            "created": "2021-03-31T10:59:41.401458Z",
-            "title": "T5",
-            "content_html": "Hi\nThis is article 5",
-            "content_md": "default markdown content",
-            "content_brief": "Default content brief",
-            "img_src": "/path/to/img",
-            "author": 1
-        }
-    ]
-}
+GET /api/articles/?page=1&ordering=-view_count
 ```
+
+可选过滤参数如下：
+
+- **page**
+  - 获取分页后的第某页：`page=1`
+- **ordering**
+  - 按某属性排序，默认以升序排列： `ordering=author`
+  - 以降序排列：`ordering=-view_count`
+  - 先按 `-view_count` 再按 `author` 排序（可叠加多个）：`ordering=-view_count,author`
+- **search**
+  - 在 `title` , `content_brief` 和  `content_md` 中进行关键字匹配（英文不分大小写）：`search=文本`
+- **article 中的任意属性**
+  - 例如找到发布者为root的所有文章：`author=1`
+  - 例如标题为 `T1` 的文章：`title=T1`
 
 
 
