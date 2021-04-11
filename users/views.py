@@ -13,6 +13,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 class UserRegister(generics.CreateAPIView):
     serializer_class = UserSerializer
 
+    # Save hashed password instead of plain text
     def perform_create(self, serializer):
         password = make_password(password=self.request.data['password'])
         serializer.save(password=password)
@@ -23,6 +24,7 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsMyself]
 
+    # Save hashed password instead of plain text
     def perform_update(self, serializer):
         password = make_password(password=self.request.data['password'])
         serializer.save(password=password)

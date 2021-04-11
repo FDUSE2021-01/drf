@@ -43,16 +43,16 @@ Content-Type: application/json
 
 Request Body:
 {
-	"username": "root",
-	"password": "se2021"
+    "username": "root",
+    "password": "se2021"
 }
 
 Response Body:
 {
-	"refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIU......JiO4veZEbTE",
-	"access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJ......rscsS_r9J39Kt6wyvEY",
-	"id": "1",
-	"username": "root"
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIU......JiO4veZEbTE",
+    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJ......rscsS_r9J39Kt6wyvEY",
+    "id": "1",
+    "username": "root"
 }
 ```
 
@@ -70,12 +70,12 @@ Content-Type: application/json
 
 Request Body:
 {
-	"refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIU......JiO4veZEbTE"
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIU......JiO4veZEbTE"
 }
 
 Response Body:
 {
-	"access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w"
+    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w"
 }
 ```
 
@@ -99,9 +99,9 @@ Content-Type: application/json
 
 Request Body:
 {
-	"username": "user2",
-	"password": "pass2",
-	"email": "a@b.com"
+    "username": "user2",
+    "password": "pass2",
+    "email": "a@b.com"
 }
 ```
 
@@ -111,18 +111,18 @@ Request Body:
 
 Response Body:
 {
-	"id": 18,
-	"email": "a@b.com",
-	"last_login": null,
-	"is_superuser": false,
-	"username": "user2",
-	"first_name": "",
-	"last_name": "",
-	"is_staff": false,
-	"is_active": true,
-	"date_joined": "2021-04-08T12:22:18.514507Z",
-	"groups":[],
-	"user_permissions":[]
+    "id": 18,
+    "email": "a@b.com",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "user2",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2021-04-08T12:22:18.514507Z",
+    "groups":[],
+    "user_permissions":[]
 }
 ```
 
@@ -138,7 +138,7 @@ Response Body:
 
 ```
 {
-	"password":["该字段是必填项。"]
+    "password":["该字段是必填项。"]
 }
 ```
 
@@ -166,9 +166,9 @@ Content-Type: application/json
 
 Request Body:
 {
-	"username": "user1",
-	"password": "pass1",
-	"email": "c@d.com"
+    "username": "user1",
+    "password": "pass1",
+    "email": "c@d.com"
 }
 ```
 
@@ -212,6 +212,8 @@ Response Body:
             "title": "T1",
             "content_html": "Hi\nThis is article 1",
             "content_md": "default markdown content",
+            "content_brief": "Default content brief",
+            "img_src": "/path/to/img",
             "author": 1
         },
         {
@@ -220,6 +222,8 @@ Response Body:
             "title": "T2",
             "content_html": "Hi\nThis is article 2",
             "content_md": "default markdown content",
+            "content_brief": "Default content brief",
+            "img_src": "/path/to/img",
             "author": 1
         }
     ]
@@ -242,6 +246,8 @@ GET /api/articles/?page=3
             "title": "T5",
             "content_html": "Hi\nThis is article 5",
             "content_md": "default markdown content",
+            "content_brief": "Default content brief",
+            "img_src": "/path/to/img",
             "author": 1
         }
     ]
@@ -267,7 +273,8 @@ Request Body:
 {
     "title": "T1",
     "content_html": "Hi\nThis is article 1",
-    "content_md": "default markdown content"
+    "content_md": "default markdown content",
+    "img_src": "/path/to/img"
 }
 ```
 
@@ -298,7 +305,9 @@ Request Body:
 {
     "title": "T2",
     "content_html": "Modified article 2.",
-    "content_md": "default markdown content"
+    "content_md": "default markdown content",
+    "content_brief": "Default content brief",
+    "img_src": "/path/to/img"
 }
 ```
 

@@ -4,6 +4,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
+    # Change email field to "required"
     email = serializers.EmailField(allow_blank=False, label='电子邮件地址', max_length=254, required=True)
 
     class Meta:
@@ -18,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
                             'last_login',
                             'date_joined']
         extra_kwargs = {
+            # Do not show passwords to the client
             'password': {
                 'write_only': True,
             },
