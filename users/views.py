@@ -37,7 +37,7 @@ class UserRegister(generics.CreateAPIView):
         instance = serializer.save(password=password, is_active= False)
         token = default_token_generator.make_token(instance)
         models.ActivationToken.objects.create(user=instance, activationToken=token)
-        send_mail('test_subject', f'http://wanju.monster/activation/{token}', 'noreply@wanju.monster',[serializer.validated_data['email']])
+        send_mail('test_subject', f'http://wanju.monster/activation.html?token={token}', 'noreply@wanju.monster',[serializer.validated_data['email']])
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
