@@ -20,9 +20,12 @@ class UserActivation(APIView):
         """\
         activate user with token
         """
-        if not request.GET['token']:
+        if not request.GET.get('token'):
             return response.Response('token required', status='400')
-        target = User.objects.get(activationtoken__activationToken= request.GET['token'])
+        try:
+            target = User.objects.get(activationtoken__activationToken= request.GET['token'])
+        except User.DoesNotExist:
+            target = None
         if target:
             target.is_active = True
             target.save()
