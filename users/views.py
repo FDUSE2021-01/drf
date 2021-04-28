@@ -1,8 +1,8 @@
 from users.serializers import UserSerializer
 from users.serializers import MyTokenObtainPairSerializer
 from users.permissions import IsMyself
+from users.models import MyUser
 
-from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
@@ -24,8 +24,8 @@ class UserActivation(APIView):
         if not request.GET.get('token'):
             return response.Response('token required', status='400')
         try:
-            target = User.objects.get(activationtoken__activationToken= request.GET['token'])
-        except User.DoesNotExist:
+            target = MyUser.objects.get(activationtoken__activationToken= request.GET['token'])
+        except MyUser.DoesNotExist:
             target = None
         if target:
             target.is_active = True
@@ -48,7 +48,7 @@ class UserRegister(generics.CreateAPIView):
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
+    queryset = MyUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsMyself]
 

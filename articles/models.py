@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from users.models import MyUser
 
 
 class Article(models.Model):
@@ -12,7 +12,7 @@ class Article(models.Model):
     view_count = models.PositiveIntegerField(default=0)
 
     author = models.ForeignKey(
-        User,
+        MyUser,
         null=True,
         on_delete=models.CASCADE,
         related_name='articles'
@@ -28,7 +28,7 @@ class FileModel(models.Model):
     file = models.FileField(upload_to='upload')
 
     author = models.ForeignKey(
-        User,
+        MyUser,
         null=True,
         on_delete=models.CASCADE,
         related_name='files'
@@ -62,9 +62,9 @@ class ArticlesGame(models.Model):
     data_ds_bundle_data = models.TextField(db_column='data-ds-bundle-data', blank=True, null=True)
     data_ds_descids = models.TextField(db_column='data-ds-descids', blank=True, null=True)
     data_ds_packageid = models.FloatField(db_column='data-ds-packageid', blank=True, null=True)
-    
+
     def __str__(self):
         return self.item_name
-        
+
     class Meta:
         db_table = 'articles_game'

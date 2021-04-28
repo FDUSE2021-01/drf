@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from users.models import MyUser
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(allow_blank=False, label='电子邮箱地址', max_length=254, required=True)
 
     class Meta:
-        model = User
+        model = MyUser
         fields = '__all__'
         read_only_fields = ['id',
                             'groups',
