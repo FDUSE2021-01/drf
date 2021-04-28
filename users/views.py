@@ -81,7 +81,10 @@ class UserFavoriteArticlesCreate(APIView):
 
     def post(self, request, format=None):
         article = get_object_or_404(Article, id=request.data.get('article_id'))
-        request.user.favorite_articles.add(article)
+        if article not in request.user.favorite_articles.all():
+            article.fav_count = article.fav_count + 1
+            article.save(update_fields=("fav_count",))
+            request.user.favorite_articles.add(article)
         return Response(data={'user_id': request.user.id, 'article_id': article.id}, status=status.HTTP_200_OK)
 
 
@@ -91,6 +94,8 @@ class UserFavoriteArticlesDestroy(APIView):
     def delete(self, request, pk, format=None):
         article = get_object_or_404(Article, id=pk)
         if article in request.user.favorite_articles.all():
+            article.fav_count = article.fav_count - 1
+            article.save(update_fields=("fav_count",))
             request.user.favorite_articles.remove(article)
             return Response(data=None, status=status.HTTP_204_NO_CONTENT)
         else:

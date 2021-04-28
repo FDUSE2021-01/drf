@@ -17,6 +17,7 @@ class Article(models.Model):
     # Auto fields
     created = models.DateTimeField(auto_now_add=True)
     view_count = models.PositiveIntegerField(default=0)
+    fav_count = models.PositiveIntegerField(default=0)
     author = models.ForeignKey(
         User,
         null=True,
