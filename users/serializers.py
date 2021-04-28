@@ -17,7 +17,8 @@ class UserSerializer(serializers.ModelSerializer):
                             'is_active',
                             'is_superuser',
                             'last_login',
-                            'date_joined']
+                            'date_joined',
+                            'favorite_articles']
         extra_kwargs = {
             # Do not show passwords to the client
             'password': {
@@ -37,3 +38,4 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['id'] = self.user.id
         data['username'] = self.user.username
         return data
+

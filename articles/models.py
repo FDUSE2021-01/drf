@@ -1,9 +1,10 @@
 from django.db import models
-from users.models import MyUser
+from drf import settings
+
+User = settings.AUTH_USER_MODEL
 
 
 class Article(models.Model):
-
     # Mandatory fields
     title = models.CharField(max_length=100, blank=True, default='')
     content_html = models.TextField()
@@ -17,7 +18,7 @@ class Article(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     view_count = models.PositiveIntegerField(default=0)
     author = models.ForeignKey(
-        MyUser,
+        User,
         null=True,
         on_delete=models.CASCADE,
         related_name='articles'
@@ -33,7 +34,7 @@ class FileModel(models.Model):
     file = models.FileField(upload_to='upload')
 
     author = models.ForeignKey(
-        MyUser,
+        User,
         null=True,
         on_delete=models.CASCADE,
         related_name='files'

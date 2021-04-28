@@ -1,11 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from articles.models import Article
 
 
 # Create your models here.
 
 class MyUser(AbstractUser):
-    pass
+    # https://docs.djangoproject.com/en/3.1/topics/db/examples/many_to_many/
+    favorite_articles = models.ManyToManyField(Article, related_name='favorite_articles', blank=True)
 
 
 class ActivationToken(models.Model):
