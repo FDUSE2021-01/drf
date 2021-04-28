@@ -88,8 +88,15 @@ class UserFavoriteArticlesCreate(APIView):
         return Response(data={'user_id': request.user.id, 'article_id': article.id}, status=status.HTTP_200_OK)
 
 
-class UserFavoriteArticlesDestroy(APIView):
+class UserFavoriteArticlesRetrieveDestroy(APIView):
     permission_classes = [IsMyself]
+
+    def get(self, request, pk, format=None):
+        article = get_object_or_404(Article, id=pk)
+        if article in request.user.favorite_articles.all():
+            return Response(data={'user_id': request.user.id, 'article_id': article.id}, status=status.HTTP_200_OK)
+        else:
+            return Response(data={'detail': '未收藏该文章'}, status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, pk, format=None):
         article = get_object_or_404(Article, id=pk)
@@ -99,4 +106,4 @@ class UserFavoriteArticlesDestroy(APIView):
             request.user.favorite_articles.remove(article)
             return Response(data=None, status=status.HTTP_204_NO_CONTENT)
         else:
-            return Response(data={"Detail": "未收藏该文章"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'detail': '未收藏该文章'}, status=status.HTTP_404_NOT_FOUND)
