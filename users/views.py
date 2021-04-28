@@ -1,8 +1,4 @@
-from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
-
-from users.serializers import UserSerializer
-from users.serializers import MyTokenObtainPairSerializer
+from users.serializers import UserSerializer, MyTokenObtainPairSerializer
 from users.permissions import IsMyself
 from users.models import MyUser
 
@@ -10,10 +6,10 @@ from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 
-from rest_framework import generics, status
-from rest_framework import response
-from rest_framework import mixins
+from rest_framework import generics, status, response, permissions
 from rest_framework.views import APIView
+from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -77,7 +73,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 # https://stackoverflow.com/questions/63361830/is-this-the-correct-way-to-add-post-to-favourites-using-django-rest-framework
 # https://docs.djangoproject.com/en/3.1/topics/db/examples/many_to_many/
 class UserFavoriteArticlesCreate(APIView):
-    permission_classes = [IsMyself]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, format=None):
         article = get_object_or_404(Article, id=request.data.get('article_id'))
@@ -89,7 +85,7 @@ class UserFavoriteArticlesCreate(APIView):
 
 
 class UserFavoriteArticlesRetrieveDestroy(APIView):
-    permission_classes = [IsMyself]
+    permission_classes = [permissions.IsAuthenticated, IsMyself]
 
     def get(self, request, pk, format=None):
         article = get_object_or_404(Article, id=pk)
