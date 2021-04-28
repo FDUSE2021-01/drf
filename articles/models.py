@@ -3,14 +3,19 @@ from users.models import MyUser
 
 
 class Article(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
+
+    # Mandatory fields
     title = models.CharField(max_length=100, blank=True, default='')
     content_html = models.TextField()
     content_md = models.TextField()
-    content_brief = models.TextField(blank=True, default='')
     img_src = models.CharField(max_length=1000)
-    view_count = models.PositiveIntegerField(default=0)
 
+    # Optional fields
+    content_brief = models.TextField(blank=True, default='')
+
+    # Auto fields
+    created = models.DateTimeField(auto_now_add=True)
+    view_count = models.PositiveIntegerField(default=0)
     author = models.ForeignKey(
         MyUser,
         null=True,

@@ -32,7 +32,7 @@ class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
     # https://stackoverflow.com/a/51737367
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.view_count = instance.view_count + 1;
+        instance.view_count = instance.view_count + 1
         instance.save(update_fields=("view_count",))
         serializer = self.get_serializer(instance)
         return response.Response(serializer.data)
