@@ -2,7 +2,7 @@
 
 # DRF 后端
 
-下列接口已部署至服务器端，且已实现 `api_view`，大部分 `GET` 类接口可以通过浏览器直接访问获得可视化的数据表示。
+下列接口已部署至服务器端，且已实现 `api_view`，大部分 `GET` 类接口（收藏相关接口除外）可以通过浏览器直接访问获得可视化的数据表示。
 
 特别好用的 Chrome 接口测试插件：Talend API Tester
 
@@ -122,11 +122,12 @@ Response Body:
     "is_active": false,
     "date_joined": "2021-04-08T12:22:18.514507Z",
     "groups":[],
-    "user_permissions":[]
+    "user_permissions":[],
+    "favorite_articles":[]
 }
 ```
 
-注意is_active为false代表需要验证。
+注意 is_active 为 false 代表需要验证。
 后端会检查 `username` 是否被注册，否则以 json 格式返回 `400 Bad Request`：
 
 ```
@@ -223,6 +224,7 @@ Response Body:
             "content_brief": "Default content brief",
             "img_src": "/path/to/img",
             "view_count": 1,
+            "fav_count": 0,
             "author": 1
         },
         {
@@ -412,3 +414,45 @@ Request Body:
     "file": "http://127.0.0.1:8000/upload/IMG_1443_HO9B90f.jpeg",
 }
 ```
+
+
+
+## 5 收藏文章
+
+用户可以收藏自己喜欢的文章。
+
+- 若需要得到用户1的文章收藏列表，可以通过 GET /api/users/1/ ，然后查看其中的 `favorite_articles` 项得到相应文章编号。
+
+- 一篇文章的收藏量可通过其 `fav_count` 属性查看。
+
+下面是添加、检查、删除收藏的接口，使用以下接口都需要带 token 。
+
+
+
+### 5.1 /api/users/fav-articles/
+
+只支持 POST，`article_id` 表示想要收藏的文章的编号。
+
+```
+POST /api/users/fav-articles/
+
+Request Header:
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
+Content-Type: application/json
+
+Request Body:
+{
+    "article_id": "1"
+}
+```
+
+
+
+### 5.2 /api/users/fav-articles/\<int:pk\>/
+
+- GET: 询问自己是否有收藏编号为 `pk` 的文章
+  - 已收藏：返回 HTTP 200 OK
+  - 未收藏：返回 HTTP 404 NOT FOUND
+- DELETE: 取消收藏编号为 `pk` 的文章
+  - 取消成功：返回 HTTP 204 NO CONTENT
+  - 未收藏或文章本身不存在：返回 HTTP 404 NOT FOUND
