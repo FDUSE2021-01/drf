@@ -8,6 +8,7 @@ from articles.models import Article
 class MyUser(AbstractUser):
     # https://docs.djangoproject.com/en/3.1/topics/db/examples/many_to_many/
     favorite_articles = models.ManyToManyField(Article, related_name='favorite_articles', blank=True)
+    icon = models.ImageField(upload_to='pictures/', default='pictures/a.png')
 
 
 class ActivationToken(models.Model):

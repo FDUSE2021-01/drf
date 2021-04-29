@@ -18,7 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
                             'is_superuser',
                             'last_login',
                             'date_joined',
-                            'favorite_articles']
+                            'favorite_articles',
+                            'icon']
         extra_kwargs = {
             # Do not show passwords to the client
             'password': {
@@ -26,6 +27,14 @@ class UserSerializer(serializers.ModelSerializer):
             },
         }
 
+class UserIconModelSerializer(serializers.ModelSerializer):
+    icon_url = serializers.SerializerMethodField('get_icon_url')
+    class Meta:
+        model = MyUser
+        fields = ['icon',]
+    def get_icon_url(self, obj):
+        return obj.icon.url
+        
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
