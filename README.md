@@ -217,6 +217,7 @@ Response Body:
     "results": [
         {
             "id": 1,
+            "favorite": false,
             "created": "2021-03-31T08:56:54.086998Z",
             "title": "T1",
             "content_html": "Hi\nThis is article 1",
@@ -422,8 +423,8 @@ Request Body:
 用户可以收藏自己喜欢的文章。
 
 - 若需要得到用户1的文章收藏列表，可以通过 GET /api/users/1/ ，然后查看其中的 `favorite_articles` 项得到相应文章编号。
-
 - 一篇文章的收藏量可通过其 `fav_count` 属性查看。
+- 用户登录后，可查看文章的 `favorite` 属性（取值为 true 或 false）来知道自己是否收藏了它，未登录时永远为 false 。
 
 下面是添加、检查、删除收藏的接口，使用以下接口都需要带 token 。
 
