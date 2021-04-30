@@ -19,7 +19,8 @@ class UserSerializer(serializers.ModelSerializer):
                             'last_login',
                             'date_joined',
                             'favorite_articles',
-                            'icon']
+                            'icon',
+                            'verifycode']
         extra_kwargs = {
             # Do not show passwords to the client
             'password': {

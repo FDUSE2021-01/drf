@@ -16,6 +16,16 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from . import models
 
 from articles.models import Article
+from random import Random
+
+def random_str(randomlength=6):
+    str = ''
+    chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
+    length = len(chars) - 1
+    random = Random()
+    for i in range(randomlength):
+        str+=chars[random.randint(0, length)]
+    return str
 
 
 class UserActivation(APIView):
@@ -48,6 +58,31 @@ class UserRegister(generics.CreateAPIView):
         models.ActivationToken.objects.create(user=instance, activationToken=token)
         send_mail('test_subject', f'http://wanju.monster/activation.html?token={token}', 'noreply@wanju.monster',
                   [serializer.validated_data['email']])
+
+
+class UserPostVerifycode(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MyUser.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsMyself]
+
+    def perform_update(self, serializer):
+        '''
+            Sent verification code and save it.
+        '''
+        code = random_str(6)
+        send_mail('test_code', code, 'noreply@wanju.monster',
+                  [serializer.validated_data['email']])
+        serializer.save(verifycode=code)
+
+class UserDealVerifycode(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, format=None):
+        code = request.data.get('verifycode')
+        if request.user.verifycode == code:
+            return Response(data={}, status=status.HTTP_200_OK)
+        else:
+            return Response(data={'detail': 'Verified error'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
