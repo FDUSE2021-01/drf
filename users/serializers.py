@@ -28,11 +28,14 @@ class UserSerializer(serializers.ModelSerializer):
             },
         }
 
+
 class UserIconModelSerializer(serializers.ModelSerializer):
     icon_url = serializers.SerializerMethodField('get_icon_url')
+
     class Meta:
         model = MyUser
-        fields = ['icon',]
+        fields = ['icon', ]
+
     def get_icon_url(self, obj):
         return obj.icon.url
 
@@ -53,4 +56,3 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['id'] = self.user.id
         data['username'] = self.user.username
         return data
-

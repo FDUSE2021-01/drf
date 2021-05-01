@@ -25,8 +25,6 @@
 root:se2021 (id:1)
 
 普通用户
-user1:pass1 (id:17)
-user2:pass2 (id:18)
 ```
 
 
@@ -144,18 +142,28 @@ Response Body:
 }
 ```
 
+
+
 ### 2.2 /api/users/activation?token=\<token\>
+
 用于用户注册后的验证，用户注册后服务器会向用户注册的邮箱发送一条带token的验证邮件，用户点击邮件链接导向前端，前端处理得到token后，给本api发送GET request，若token相同即验证用户邮箱成功。
 
 ```
 GET /api/users/activation?token=test
 ```
 
+
+
 ### 2.3 /api/users/\<int\>/
 
 用户登录后可以查看、更新、删除自己的信息。
 
-更新时，至少需要提供 `username`, `password`, `email`，其余部分选填，未填的部分在数据库中将保留原值（而不会被置为null）。
+更新时可以使用 PUT 或 PATCH，两者格式相同。
+
+- 使用 PUT 时，至少需要提供 `username`, `password`, `email`，其余部分选填，未填的部分在数据库中将保留原值（而不会被置为null）。
+- 使用 PATCH 时，可以只提供需要更新的属性（例如只改 `username` ），进行局部更新。
+
+两者的区别是根据 HTTP 方法的语义确定的。一般而言，使用 PATCH 可能会更灵活。
 
 ```
 GET /api/users/17/
@@ -165,7 +173,7 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
 ```
 
 ```
-PUT /api/users/17/
+PUT/PATCH /api/users/17/
 
 Request Header:
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
