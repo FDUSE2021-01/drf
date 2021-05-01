@@ -86,6 +86,7 @@ class UserDealVerifycode(APIView):
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MyUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsMyself]
 
