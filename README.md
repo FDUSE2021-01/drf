@@ -437,7 +437,7 @@ Request Header:
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
 Content-Type: application/json
 
-Request Body:
+Response Body:
 {
     "name": "DOTA7",
     "file": "http://127.0.0.1:8000/upload/IMG_1443_HO9B90f.jpeg",
@@ -481,7 +481,7 @@ Request Body:
 
 #### 5.1.2 GET
 
-获取分页后的用户收藏文章列表。
+用户在登陆后可以获取分页后的收藏文章列表。
 
 可以通过指定 `page_size` 来控制每一页的文章数（默认为3）
 
@@ -489,6 +489,10 @@ Request Body:
 
 ```
 GET /api/users/fav-articles/
+
+Request Header:
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
+Content-Type: application/json
 
 Response Body:
 {
