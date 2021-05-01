@@ -1,4 +1,4 @@
-from users.serializers import UserSerializer, MyTokenObtainPairSerializer
+from users.serializers import UserSerializer, MyTokenObtainPairSerializer, UserChangePasswordSerializer
 from users.permissions import IsMyself
 from users.models import MyUser
 
@@ -35,7 +35,7 @@ class UserActivation(APIView):
         activate user with token
         """
         if not request.GET.get('token'):
-            return response.Response('token required', status='400')
+            return response.Response('token required', status=status.HTTP_400_BAD_REQUEST)
         try:
             target = MyUser.objects.get(activationtoken__activationToken= request.GET['token'])
         except MyUser.DoesNotExist:
@@ -86,7 +86,6 @@ class UserDealVerifycode(APIView):
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = MyUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsMyself]
 
@@ -98,7 +97,25 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
             serializer.save(password=password)
         else:
             serializer.save()
-
+    
+# change password when logged in
+class UserChangePassword(generics.GenericAPIView):
+    queryset = MyUser.objects.all()
+    serializer_class = UserChangePasswordSerializer
+    permission_classes = [permissions.IsAuthenticated, IsMyself]
+    def get_object(self, queryset= None):
+        return self.request.user
+    def put(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Check old password
+        if not self.object.check_password(serializer.data.get("old_password")):
+            return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+        self.object.set_password(serializer.data.get("new_password"))
+        self.object.save()
+        return response.Response('Password updated successfully')
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
