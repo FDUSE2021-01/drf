@@ -1,6 +1,7 @@
 from users.models import MyUser
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from articles.serializers import ArticleSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -39,11 +40,14 @@ class UserIconModelSerializer(serializers.ModelSerializer):
     def get_icon_url(self, obj):
         return obj.icon.url
 
+
 class UserChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+
     class Meta:
         model = MyUser
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):

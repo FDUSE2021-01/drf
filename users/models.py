@@ -11,6 +11,7 @@ class MyUser(AbstractUser):
     icon = models.ImageField(upload_to='pictures/', default='pictures/a.png')
     verifycode = models.CharField(max_length=254, default='')
 
+
 class ActivationToken(models.Model):
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
     activationToken = models.CharField(max_length=255)
