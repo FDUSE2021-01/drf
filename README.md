@@ -186,7 +186,23 @@ Request Header:
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
 ```
 
+### 2.4 /api/users/password_change/
 
+登录状态下更新密码，需要再次提供旧密码以作为验证
+
+```
+PUT /api/users/password_change/
+
+Request Header:
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
+Content-Type: application/json
+
+Request Body:
+{
+    "old_password": "123456",
+    "new_password": "myNewPassword",
+}
+```
 
 ## 3 Articles
 
