@@ -1,6 +1,6 @@
-from users.serializers import UserSerializer, MyTokenObtainPairSerializer, UserChangePasswordSerializer
-from users.permissions import IsMyself
-from users.models import MyUser
+from .serializers import UserSerializer, MyTokenObtainPairSerializer, UserChangePasswordSerializer
+from .permissions import IsMyself
+from .models import MyUser
 
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
@@ -16,7 +16,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from . import models
 
 from articles.models import Article
+from articles.serializers import ArticleSerializer
 from random import Random
+
 
 def random_str(randomlength=6):
     str = ''
@@ -24,7 +26,7 @@ def random_str(randomlength=6):
     length = len(chars) - 1
     random = Random()
     for i in range(randomlength):
-        str+=chars[random.randint(0, length)]
+        str += chars[random.randint(0, length)]
     return str
 
 
@@ -37,7 +39,7 @@ class UserActivation(APIView):
         if not request.GET.get('token'):
             return response.Response('token required', status=status.HTTP_400_BAD_REQUEST)
         try:
-            target = MyUser.objects.get(activationtoken__activationToken= request.GET['token'])
+            target = MyUser.objects.get(activationtoken__activationToken=request.GET['token'])
         except MyUser.DoesNotExist:
             target = None
         if target:
@@ -74,6 +76,7 @@ class UserPostVerifycode(generics.RetrieveUpdateDestroyAPIView):
                   [serializer.validated_data['email']])
         serializer.save(verifycode=code)
 
+
 class UserDealVerifycode(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -98,14 +101,17 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
             serializer.save(password=password)
         else:
             serializer.save()
-    
+
+
 # change password when logged in
 class UserChangePassword(generics.GenericAPIView):
     queryset = MyUser.objects.all()
     serializer_class = UserChangePasswordSerializer
     permission_classes = [permissions.IsAuthenticated, IsMyself]
-    def get_object(self, queryset= None):
+
+    def get_object(self, queryset=None):
         return self.request.user
+
     def put(self, request, *args, **kwargs):
         self.object = self.get_object()
         serializer = self.get_serializer(data=request.data)
@@ -118,6 +124,7 @@ class UserChangePassword(generics.GenericAPIView):
         self.object.save()
         return response.Response('Password updated successfully')
 
+
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
@@ -125,8 +132,13 @@ class MyTokenObtainPairView(TokenObtainPairView):
 # Using many-to-many field in User model to manage favorites
 # https://stackoverflow.com/questions/63361830/is-this-the-correct-way-to-add-post-to-favourites-using-django-rest-framework
 # https://docs.djangoproject.com/en/3.1/topics/db/examples/many_to_many/
-class UserFavoriteArticlesCreate(APIView):
+class UserFavoriteArticlesListCreate(generics.ListCreateAPIView):
+    serializer_class = ArticleSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.favorite_articles.all()
 
     def post(self, request, format=None):
         article = get_object_or_404(Article, id=request.data.get('article_id'))

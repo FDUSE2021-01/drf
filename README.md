@@ -226,7 +226,11 @@ Request Body:
 
 ##### 3.1.1.1 基本操作
 
-获取分页后的文章列表，不需要登陆，不需要发送其他信息。在当前的测试阶段，一页中限制最多2篇文章。
+获取分页后的文章列表，不需要登陆，不需要发送其他信息。
+
+可以通过指定 `page_size` 来控制每一页的文章数（默认为3）
+
+- 例如：`GET /api/articles/?page_size=2&page=1` 
 
 Response 中的 `count` 表示文章总数， `next` 和 `previous` 为下一页和上一页的 URI 。
 
@@ -433,7 +437,7 @@ Request Header:
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
 Content-Type: application/json
 
-Request Body:
+Response Body:
 {
     "name": "DOTA7",
     "file": "http://127.0.0.1:8000/upload/IMG_1443_HO9B90f.jpeg",
@@ -456,7 +460,9 @@ Request Body:
 
 ### 5.1 /api/users/fav-articles/
 
-只支持 POST，`article_id` 表示想要收藏的文章的编号。
+#### 5.1.1 POST
+
+`article_id` 表示想要收藏的文章的编号。
 
 ```
 POST /api/users/fav-articles/
@@ -468,6 +474,46 @@ Content-Type: application/json
 Request Body:
 {
     "article_id": "1"
+}
+```
+
+
+
+#### 5.1.2 GET
+
+用户在登陆后可以获取分页后的收藏文章列表。
+
+可以通过指定 `page_size` 来控制每一页的文章数（默认为3）
+
+- 例如：`GET /api/users/fav-articles/?page_size=2&page=1` 
+
+```
+GET /api/users/fav-articles/
+
+Request Header:
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1......8I3-qocnoMJl2w
+Content-Type: application/json
+
+Response Body:
+{
+    "count": 4,
+    "next": "http://127.0.0.1:8000/api/upload/?page=2",
+    "previous": null,
+    "results": [
+        {
+            "id": 1,
+            "favorite": true,
+            "title": "任天堂游戏大放送",
+            ...
+            "author": 1
+        },
+        {
+            ...
+        },
+        {
+        	...
+        }
+    ]
 }
 ```
 
