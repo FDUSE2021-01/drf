@@ -1,5 +1,5 @@
-from articles.models import Article, FileModel
-from articles.serializers import ArticleSerializer, FileSerializer
+from articles.models import Article, FileModel, ArticlesGame
+from articles.serializers import ArticleSerializer, FileSerializer, SteamGameSerializer
 from articles.permissions import IsAuthorOrReadOnly
 
 from rest_framework import generics
@@ -20,6 +20,10 @@ class ArticleList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+
+class SteamGameDetail(generics.ListAPIView):
+    queryset = ArticlesGame.objects.all()
+    serializer_class = SteamGameSerializer
 
 class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()

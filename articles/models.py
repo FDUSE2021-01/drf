@@ -46,7 +46,6 @@ class FileModel(models.Model):
 
 
 class ArticlesGame(models.Model):
-    index = models.IntegerField(blank=True, null=True)
     href = models.TextField(blank=True, null=True)
     data_ds_appid = models.TextField(db_column='data-ds-appid', blank=True, null=True)
     data_ds_itemkey = models.TextField(db_column='data-ds-itemkey', blank=True, null=True)

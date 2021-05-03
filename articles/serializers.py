@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from articles.models import Article, FileModel
+from articles.models import Article, FileModel, ArticlesGame
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -25,3 +25,8 @@ class FileSerializer(serializers.ModelSerializer):
         model = FileModel
         fields = '__all__'
         read_only_fields = ['author']
+
+class SteamGameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ArticlesGame
+        fields = '__all__'
