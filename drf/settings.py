@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'wanju.monster',
     'www.wanju.monster',
-    '173.82.119.100',
+    '158.247.197.137',
     '127.0.0.1',
     'localhost',
 ]
