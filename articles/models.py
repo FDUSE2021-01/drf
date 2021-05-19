@@ -1,16 +1,23 @@
 from django.db import models
-from django.contrib.auth.models import User
+from drf import settings
+
+User = settings.AUTH_USER_MODEL
 
 
 class Article(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
+    # Mandatory fields
     title = models.CharField(max_length=100, blank=True, default='')
     content_html = models.TextField()
     content_md = models.TextField()
-    content_brief = models.TextField(blank=True, default='')
     img_src = models.CharField(max_length=1000)
-    view_count = models.PositiveIntegerField(default=0)
 
+    # Optional fields
+    content_brief = models.TextField(blank=True, default='')
+
+    # Auto fields
+    created = models.DateTimeField(auto_now_add=True)
+    view_count = models.PositiveIntegerField(default=0)
+    fav_count = models.PositiveIntegerField(default=0)
     author = models.ForeignKey(
         User,
         null=True,
@@ -39,7 +46,6 @@ class FileModel(models.Model):
 
 
 class ArticlesGame(models.Model):
-    index = models.IntegerField(blank=True, null=True)
     href = models.TextField(blank=True, null=True)
     data_ds_appid = models.TextField(db_column='data-ds-appid', blank=True, null=True)
     data_ds_itemkey = models.TextField(db_column='data-ds-itemkey', blank=True, null=True)
@@ -62,9 +68,9 @@ class ArticlesGame(models.Model):
     data_ds_bundle_data = models.TextField(db_column='data-ds-bundle-data', blank=True, null=True)
     data_ds_descids = models.TextField(db_column='data-ds-descids', blank=True, null=True)
     data_ds_packageid = models.FloatField(db_column='data-ds-packageid', blank=True, null=True)
-    
+
     def __str__(self):
         return self.item_name
-        
+
     class Meta:
         db_table = 'articles_game'

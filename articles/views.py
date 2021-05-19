@@ -1,5 +1,5 @@
-from articles.models import Article, FileModel
-from articles.serializers import ArticleSerializer, FileSerializer
+from articles.models import Article, FileModel, ArticlesGame
+from articles.serializers import ArticleSerializer, FileSerializer, SteamGameSerializer
 from articles.permissions import IsAuthorOrReadOnly
 
 from rest_framework import generics
@@ -21,6 +21,10 @@ class ArticleList(generics.ListCreateAPIView):
         serializer.save(author=self.request.user)
 
 
+class SteamGameDetail(generics.ListAPIView):
+    queryset = ArticlesGame.objects.all()
+    serializer_class = SteamGameSerializer
+
 class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
@@ -32,7 +36,7 @@ class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
     # https://stackoverflow.com/a/51737367
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.view_count = instance.view_count + 1;
+        instance.view_count = instance.view_count + 1
         instance.save(update_fields=("view_count",))
         serializer = self.get_serializer(instance)
         return response.Response(serializer.data)

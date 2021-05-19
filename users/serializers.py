@@ -1,6 +1,7 @@
-from django.contrib.auth.models import User
+from users.models import MyUser
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from articles.serializers import ArticleSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -8,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(allow_blank=False, label='电子邮箱地址', max_length=254, required=True)
 
     class Meta:
-        model = User
+        model = MyUser
         fields = '__all__'
         read_only_fields = ['id',
                             'groups',
@@ -17,13 +18,35 @@ class UserSerializer(serializers.ModelSerializer):
                             'is_active',
                             'is_superuser',
                             'last_login',
-                            'date_joined']
+                            'date_joined',
+                            'favorite_articles',
+                            'icon',
+                            'verifycode']
         extra_kwargs = {
             # Do not show passwords to the client
             'password': {
                 'write_only': True,
             },
         }
+
+
+class UserIconModelSerializer(serializers.ModelSerializer):
+    icon_url = serializers.SerializerMethodField('get_icon_url')
+
+    class Meta:
+        model = MyUser
+        fields = ['icon', ]
+
+    def get_icon_url(self, obj):
+        return obj.icon.url
+
+
+class UserChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+    class Meta:
+        model = MyUser
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
