@@ -81,33 +81,7 @@ class SampleTest(TestCase):
         response = views.UserChangePassword.as_view()(request)
         self.assertEqual(response.status_code, 200)
         response.render()
-
-    def test_registration(self):
-        request = self.factory.post('/api/users/registration', {
-                'username': 'testuser2',
-                'password': 'top_secret',
-                'email': 'a@b.com'
-            })
-        request.user = self.user
-        response = views.UserRegister.as_view()(request)
-        self.assertEqual(response.status_code, 201)
-        response.render()
-        self.assertEqual(len(response.data), 15, f'raw response: {response.content}')
-        self.assertEqual(response.data['username'], 'testuser2')
-
-    def test_registration_fail(self):    
-        request = self.factory.post('/api/users/registration', {
-                'username': 'testuser',
-                'password': 'top_secret',
-                'email': 'a@b.com'
-            })
-        request.user = self.user
-        response = views.UserRegister.as_view()(request)
-        self.assertEqual(response.status_code, 400)
-        response.render()
-
     
-
     def test_api_user_int_get(self):
         request = self.factory.get('/api/users/', kwargs={'pk' :1})
         force_authenticate(request, user=self.user, token=self.token)
@@ -154,10 +128,82 @@ class SampleTest(TestCase):
         response = views.UserFavoriteArticlesListCreate.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
-    def test_favorite_articles(self):
+    def test_favorite_articles_fail(self):
         request = self.factory.post('/api/users/fav-articles/', {
                 "article_id": "1" 
             })
         force_authenticate(request, user=self.user, token=self.token)
         response = views.UserFavoriteArticlesListCreate.as_view()(request)
         self.assertEqual(response.status_code, 404)
+
+    def test_black_api_user_int_put(self):
+        request = self.factory.put('/api/users/', {
+                'username': 'testuser',
+                'password': 'top_secret',
+                'email': 'c@d.com'
+                })
+        force_authenticate(request, user=self.user, token=self.token)
+        response = views.UserDetail.as_view()(request, pk=1)
+        self.assertEqual(response.status_code, 200)
+        response.render()
+        self.assertEqual(len(response.data), 15, f'raw response: {response.content}')
+        self.assertEqual(response.data['email'], 'c@d.com')
+
+        response = views.UserDetail.as_view()(request, pk=0)
+        self.assertEqual(response.status_code, 404)
+
+        response = views.UserDetail.as_view()(request, pk=2)
+        self.assertEqual(response.status_code, 404)
+    
+
+    def test_black_favorite_articles(self):
+        models.Article.objects.create(
+            title= 'test title',
+            content_html = '<span>html content</span>',
+            content_md = '# md content',
+            img_src = 'https://img01.vgtime.com/game/cover/2020/05/13/200513111436256_u59.jpg',
+        )
+        request = self.factory.post('/api/users/fav-articles/', {
+                "article_id": "1" 
+            })
+        force_authenticate(request, user=self.user, token=self.token)
+        response = views.UserFavoriteArticlesListCreate.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/api/users/fav-articles/', {
+                "article_id": "0" 
+            })
+        force_authenticate(request, user=self.user, token=self.token)
+        response = views.UserFavoriteArticlesListCreate.as_view()(request)
+        self.assertEqual(response.status_code, 404)
+
+        request = self.factory.post('/api/users/fav-articles/', {
+                "article_id": "2" 
+            })
+        force_authenticate(request, user=self.user, token=self.token)
+        response = views.UserFavoriteArticlesListCreate.as_view()(request)
+        self.assertEqual(response.status_code, 404)
+
+    def test_registration(self):
+        request = self.factory.post('/api/users/registration', {
+            'username': 'testuser2',
+            'password': 'top_secret',
+            'email': 'a@b.com'
+        })
+        request.user = self.user
+        response = views.UserRegister.as_view()(request)
+        self.assertEqual(response.status_code, 201)
+        response.render()
+        self.assertEqual(len(response.data), 15, f'raw response: {response.content}')
+        self.assertEqual(response.data['username'], 'testuser2')
+
+    def test_registration_fail(self):    
+        request = self.factory.post('/api/users/registration', {
+                'username': 'testuser',
+                'password': 'top_secret',
+                'email': 'a@b.com'
+            })
+        request.user = self.user
+        response = views.UserRegister.as_view()(request)
+        self.assertEqual(response.status_code, 400)
+        response.render()

@@ -41,3 +41,22 @@ class SampleTest(TestCase):
         self.assertEqual(response.status_code, 200)
         response.render()
         self.assertContains(response, 'results', 1)
+
+    def test_black_articles(self):
+        # middleware are not supported. 
+        # Create an instance of a GET request.
+        request = self.factory.get('/api/articles')
+
+        request.user = self.user
+
+        # Use this syntax for class-based views.
+        response = views.ArticleList.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+        response.render()
+        self.assertEqual(len(response.data), 4, f'raw response: {response.content}')
+        self.assertNotEqual(len(response.data), 5, f'raw response: {response.content}')
+        self.assertNotEqual(len(response.data), 3, f'raw response: {response.content}')
+        self.assertEqual(response.data['count'], 1)
+        self.assertNotEqual(response.data['count'], 0)
+        self.assertNotEqual(response.data['count'], 2)
+        self.assertContains(response, 'results', 1)
